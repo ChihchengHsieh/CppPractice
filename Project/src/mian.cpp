@@ -108,6 +108,24 @@ int main()
     // Using enum
     // Using Define -> Don't use this in Modern c++, cuz it's hard to debug
 
+    /*
+        Array: Element_Type arrayName [constant number of elements]
+    */
+    int hightScorePerLevel [10] {3,5}; //Declaring 3 and 5 to be the first and second element, rest of them are 0
+
+    // or
+
+    int hightScorePerLevel [] {1,2,3,4,5}; // size will be automatically calculated
+
+
+
+    
+
+
+
+
+
+
     system("pause"); // Pause the program
 
     return 0;
