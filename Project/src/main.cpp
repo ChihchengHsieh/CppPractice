@@ -4,6 +4,10 @@
 #include <cstring>
 #include <typeinfo>
 #include <string>
+#include <cmath>
+
+#include "Account.h"
+#include "Mystring.h"
 
 using std::cin;
 using std::cout;
@@ -44,6 +48,57 @@ For integer:
 	unsigned long long int -> 64 bits,
 
 */
+
+// declaring a class here
+
+// class Player
+// {
+
+//   public:
+//     // attributes
+//     string name;
+//     int health;
+//     int xp;
+//     // methods
+
+//     void talk(string text_to_say)
+//     {
+//         cout << name << " says " << text_to_say << endl;
+//     };
+//     bool is_dead();
+// }; // after the class decalring, a semi-collon is needed.
+
+// class Account
+// {
+//     string name;
+//     double balance{0};
+
+//     bool deposit(double bal){balance += bal};
+//     bool withdraw(double bal){balance -= bal};
+// };
+
+// Creating a function:
+
+const double pi{3.1415926};
+double calc_area_circle(double radius);
+void area_circle();
+void showingTwoValues(double firstNumber = 50.5, double secondNumber = 199.7);
+
+string print_guest_list(const string &guest_1, const string &guest_2, const string &guest_3);
+void clear_guest_list(string &guest_1, string &guest_2, string &guest_3);
+
+double a_penny_doubled_everyday(int days, double inputValue);
+
+string print_guest_list(const string guest_list[], size_t guest_list_size);
+void clear_guest_list(string guest_list[], size_t guest_list_size);
+
+int doubleNumberByTwo(int *num);
+void displayArray(const int *const array_ptr, size_t size);
+int *creat_array(size_t size, int init_value);
+
+int *initDeclaredArray(size_t size, int value);
+
+// declaring a class
 
 int main()
 {
@@ -520,4 +575,508 @@ int main()
     // }
 
     // cout << journal_entry_1 << endl;
+
+    /*
+        Function:
+            RETURN_TYPE FUNCTION_NAME (ARGUMENTS) {
+                STATEMENTS;
+            }
+    */
+
+    // double bill_total {102.78};
+    // int number_of_guests {5};
+
+    // //DO NOT MODIFY THE CODE ABOVE THIS LINE----
+    // //----WRITE YOUR CODE BELOW THIS LINE----
+
+    // double individual_bill {bill_total/number_of_guests};
+
+    // double individual_bill_1 = floor(individual_bill);
+    // double individual_bill_2 = round(individual_bill);
+    // double individual_bill_3 = ceil(individual_bill*100) / 100;
+
+    /*
+        Function Definition:
+            go to the top of the file to see the function
+    */
+
+    // area_circle();
+
+    /*
+        Function Prototype:
+            RETURN_TYPE FUNCTION_NAME (ARGUMENTS);
+    */
+
+    /*
+        Arguments: Usually pass in by value
+            default argument value:
+                Setting the defualt argument value in the "Prototyping" process but not in the decalration phase.
+    */
+
+    // showingTwoValues();
+
+    /*
+        Function Overlaoding:
+            void functionOne(int arg);
+            viud functionOne(double arg);
+            -> THe CPP wull know which function to run according to the passed arguments.
+    */
+
+    /*
+        Passing arrays to argument -> the array is passed by the reference rather than copy it 
+    */
+
+    // string guest_list[]{"Larry", "Moe", "Curly"};
+    // size_t guest_list_size{3};
+
+    // print_guest_list(guest_list, guest_list_size);
+    // clear_guest_list(guest_list, guest_list_size);
+    // print_guest_list(guest_list, guest_list_size);
+
+    /*
+        Passing by Reference:
+            RETURN_TYPE FUNCTION_NAME (TYPE &ARG_NAME); -> Prototype
+            RETURN_TYPE FUNCTION_NAME (TYPE &ARG_NAME){} -> Definition
+    */
+
+    // print_guest_list(guest_1, guest_2, guest_3);
+    // clear_guest_list(guest_1, guest_2, guest_3);
+    // print_guest_list(guest_1, guest_2, guest_3);
+
+    /*
+        Scope:
+            static TYPE VARIABLE_NAME {}; -> This can been seen in the local scope(Preserved). * Only init at the first run
+            For the class -> every class instance will share this value.
+        Why? 
+            Then we don't need to use the global scope anymore.
+    */
+
+    /*
+        Inline Function:
+            1. avoid function call overhead
+            2. generate inline assembly code
+            3. faster 
+            4. could cause code bloat
+
+            Using "inline" keyword before the return type
+
+            example:
+                inline TYPE FUNCTION_NAME () { return ; // directly return} 
+    */
+
+    /*
+        Recursive Function
+    */
+
+    // double total_amount{a_penny_doubled_everyday(18, 0.01)};
+
+    // cout << total_amount << endl;
+
+    /*
+        Pointer and Reference:
+            1. Whose value is an address
+            2. To use the pointer, you must know the type that you are pointing
+            3. Use Case:
+                (1) Inside a function, I call use a pointer to access the data outside\
+                (2) Operate on arrays efficiently
+            
+    */
+
+    // Declaring a pointer:
+    // Always init the ptr, nullptr means it's pointing nowhere
+
+    // int *int_ptr{nullptr}; // init to
+
+    // // Storing the variable address to the ptr
+
+    // int score{10};
+
+    // int_ptr = &score;
+
+    // cout << *int_ptr << endl; // Dereferencing
+
+    // // changing the value through ptr
+
+    // *int_ptr = 500;
+
+    // cout << score << endl;
+
+    // when we allocate the ptr, ew need to delete the allocation
+
+    // For example:
+
+    // int *int_ptr{nullptr};
+
+    // int_ptr = new int;
+
+    // cout << *int_ptr << endl;
+
+    // delete int_ptr;
+
+    // For Declaring a ptr for containing a array:
+
+    // double *tmp_ptr{nullptr};
+
+    // size_t size{0};
+
+    // cout << "How many temps? " << endl;
+
+    // cin >> size;
+
+    // tmp_ptr = new double[size]; // allocation
+
+    // cout << tmp_ptr << endl;
+
+    // delete tmp_ptr // delete the allocation
+
+    // So the array_name or the ptr is just pointing to the firstElement of the array
+
+    // Accessin the second element by *(array_name +1)  or *(ptr +1) or array_name[1] or ptr[1]
+
+    // ptr++ -> which let the ptr pointing to the next element
+
+    /*
+        Const and pointer
+    */
+
+    // int high_score{100};
+    // int low_score{65};
+
+    // const int *score_ptr{&high_score};
+
+    // *socre_ptr = 60  // ERROR -> Cannot change the value pointing
+    // score_ptr = &low_score;
+
+    // int *const score_ptr2 {&high_score};
+
+    // *score_ptr2 = 60; // OK
+
+    // score_ptr = &low_score; // ERROR -> Cannot change the address contained at the ptr
+
+    /*
+        Passing pointer to function:
+            Example:
+                Prototype:
+                    RETURN_TYPE FUNCTION_NAME(TYPE *PTR);
+                Definition:
+                    RETURN_TYPE FUNcTION_NAME(TYPE *PTR) {
+
+                    }
+                How do we call this function?
+                    FUNCTION_NAME(&arg) -> this kind of function can change the value outside the scope of the function
+    */
+
+    // int numOne{5};
+
+    // cout << numOne << endl;
+    // doubleNumberByTwo(&numOne);
+    // cout << numOne << endl;
+
+    /*
+        Return Ptr from a fucntion:
+            Prototype:
+                TYPE *FUNCTION_NAME();
+        Warning: Don't return a local variable (int, string, double) inside a function -> it will be deleted
+                However, vector and array are fine since they're storing an address.
+    */
+
+    // int *arrayOne{nullptr};
+
+    // arrayOne = creat_array(5, 20);
+
+    // cout << "Calling the displayArray" << endl;
+
+    // displayArray(arrayOne, 5);
+
+    /*
+        Pitfall of the ptr:
+            1. without init -> Pointing to garbage 
+            2. pointint to released memory
+            3. not checking when "new" fail
+            4. forgetting to lease the allocated memory
+
+    */
+
+    /*
+        Reference:
+    */
+
+    // vector<string> stooges{"Larry", "Moe", "Curly"};
+
+    // for (auto &name : stooges)
+    // {
+    //     name = "Funny";
+    // }
+
+    // // Q : when using the ranged-base for loop, it's better to use the referencing?
+
+    // for (auto const &name : stooges) // using passing by the reference can make the code more efficient.
+    // {
+    //     cout << name << endl;
+    // }
+
+    // Q: it's same to call int NANE and int &Name ?
+
+    // int x{100};
+    // int &ref = x; // how we init a reference!!!!!! // therefore the ref can be used like x, it got the same value and the same memory address.
+    // int *ptr{&ref};
+    // cout << ref << endl;
+
+    // // Thse two got the same address
+    // cout << &ref << endl;
+    // cout << &x << endl;
+    // cout << ptr << endl;
+    // cout << *ptr << endl;
+
+    // the best way to protect a ref or ptr is to use "const int *const ptr_name" to set as the argument
+
+    // if we want to set a array start from calling a ptr, we have to use:
+
+    // int *intArrayPtr{nullptr};
+    // // and then ->
+    // intArrayPtr = new int[50]; // we have to giving the size
+
+    // // Q: this is the same as declaring an array like this?
+
+    // int intArray[50];
+
+    // // Showing information
+
+    // cout << intArrayPtr << endl;
+    // cout << intArray << endl;
+
+    // // -> Both of them contain the info of address
+
+    // // Showing the first element thorugh ptr way:
+
+    // cout << *intArrayPtr << endl;
+    // cout << *intArray << endl;
+
+    // // through the array way:
+
+    // cout << intArrayPtr[2] << endl;
+    // cout << intArray[2] << endl;
+
+    // it both seccess
+
+    // Question: so we are using a type an returning an array, we cant just use the return ptr type?
+
+    // Experiment:
+
+    // int *arrayPtr{nullptr};
+
+    // arrayPtr = initDeclaredArray(5, 10);
+
+    // cout << arrayPtr << endl; // expeting to see an address
+
+    // cout << "The output of the function: " << initDeclaredArray(5, 10) << endl;
+
+    // cout << "New Program" << endl;
+
+    /*
+        Object-oriented Programmin:
+    */
+
+    // C programming is the procedural programming.
+
+    /*
+        Class !!  objected-programming
+    */
+
+    //using a pointer for declaring a class:
+
+    /*
+        Creating a class:
+            Normal:
+                CLASS_NAME variable_name;
+            Using ptr:
+                CLASS_NAME *varaible_name = new CLASS_NAME(); ->> calling a constructor for creating an instance 
+                !! Warning: using this method need to provide the "delete vriable_name" after the use of this class or it will lead to the memory leak
+    */
+
+    // Player frank;
+    // Player hero;
+
+    // Player *enemy{nullptr};
+    // enemy = new Player;
+    // delete enemy;
+
+    // Player players[]{frank, hero};
+
+    /*Class methods*/
+
+    // Player frank;
+    // frank.name = "frank";
+    // frank.health = 100;
+    // frank.xp = 12;
+    // frank.talk("Hi there");
+
+    // Player *enemy{nullptr};
+    // enemy = new Player;
+    // enemy->name = "Enemy";
+    // enemy->health = 100;
+    // enemy->xp = 15;
+    // enemy->talk("I will destroy you");
+
+    /*
+        Talking about the public and private:
+            CLass fields is private by default, and the struct is public by default.
+    */
+
+    // Account frank;
+
+    // frank.set_name("Frank");
+
+    // cout << frank.get_name() << endl;
+
+    /*
+        Constructors -> the c++ has the default constructor
+
+        !! however, once a constructor is defined in the class, the default constructor will be removed
+
+    */
+
+    /**********
+     * Operator Overlaoding
+     *      Operators that can't be overlaoded: :: :? .* . sizeof
+     *      
+     *      Syntax:
+     *          TYPE &TYPE::operator=(const TYPE &rhs);
+     *      Q: why do we need to return *this? ==> it's the object
+     *      A: return the current by reference to allow chain assignment
+     * ************/
+}
+
+//////////////////////////// Function Definitions ////////////////////////////
+
+int *initDeclaredArray(size_t size, int value)
+{
+
+    // int newArray[static_cast<int>(size)]; // it's considered as the local variable, so it will deleted before sending to the outisde scope
+
+    int *newArray{nullptr};
+
+    newArray = new int[size];
+
+    for (size_t i{0}; i < size; i++)
+    {
+        newArray[i] = value;
+    }
+
+    cout << "The address int the function: " << newArray << endl;
+
+    return newArray;
+}
+
+void displayArray(const int *const array_ptr, size_t size)
+{
+    for (int i{0}; i < static_cast<int>(size); i++)
+    {
+        cout << *(array_ptr + i) << endl;
+    }
+}
+
+int *creat_array(size_t size, int init_value)
+{
+    int *new_array{nullptr};
+
+    new_array = new int[size]; // this line is needed ->    Q: this is the allocation for telling the array that we're going to store a sequence of value?
+
+    for (int i{0}; i < static_cast<int>(size); i++)
+    {
+        *(new_array + i) = init_value;
+    }
+
+    return new_array; // Return a ptr
+}
+
+int doubleNumberByTwo(int *num)
+{
+    *num *= 2;
+}
+
+// A penny is represented as 0.01
+
+double a_penny_doubled_everyday(int days, double inputValue)
+{
+
+    if (days == 1)
+    {
+        return inputValue;
+    }
+
+    return a_penny_doubled_everyday(days - 1, inputValue * 2);
+};
+
+string print_guest_list(const string &guest_1, const string &guest_2, const string &guest_3)
+{
+    cout << guest_1 << endl;
+    cout << guest_2 << endl;
+    cout << guest_3 << endl;
+};
+
+void clear_guest_list(string &guest_1, string &guest_2, string &guest_3)
+{
+    guest_1 = " ";
+    guest_2 = " ";
+    guest_3 = " ";
+};
+
+string print_guest_list(const string guest_list[], size_t guest_list_size)
+{
+
+    for (int i{0}; i < static_cast<int>(guest_list_size); i++)
+    {
+        cout << guest_list[i] << endl;
+    }
+
+    // for (auto element : guest_list)
+    // {
+    //     cout << element << endl;
+    // }
+
+    return guest_list[0];
+}
+
+void clear_guest_list(string guest_list[], size_t guest_list_size)
+{
+
+    for (int i{0}; i < static_cast<int>(guest_list_size); i++)
+    {
+        guest_list[i] = " ";
+    }
+
+    // for (auto &element : guest_list)
+    // {
+    //     element = " ";
+    // }
+}
+
+int find_area(int side_length)
+{
+    return side_length * side_length;
+}
+
+double find_area(double length, double width)
+{
+    return length * width;
+}
+
+double calc_area_circle(double radius)
+{
+    return pi * radius * radius;
+}
+
+void area_circle()
+{
+    double radius{};
+    cout << "\nEnter the radius of the circle";
+    cin >> radius;
+    cout << "The area of a circle with radius " << radius << " is " << calc_area_circle(radius) << endl;
+}
+
+void showingTwoValues(double firstNumber, double secondNumber)
+{
+    cout << "The first value is: " << firstNumber << endl;
+    cout << "The Second value is " << secondNumber << endl;
 }
