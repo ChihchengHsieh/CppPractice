@@ -1023,8 +1023,32 @@ int main()
         !! Pointer arithmetic is not supported
     */
 
-//     std::unique_ptr<Account> a1 = std::make_unique<SavingAccount>("Frank", 5000.0, 0.003);
-//     cout << a1->get_balance() << endl;
+
+
+    /*
+        Exception Handling:
+            Syntax:
+                try{
+                    // CODE1
+                    throw 1; // the code after throw will not be executed
+                    // CODE2
+                }
+                catch (int &ex){ // it will catch the throwed int(exception)
+                    std::err << "ERROR MESSAGE" << endl;
+                }
+                catch (std:string &ex){
+                    std::cerr << "ANOTHER ERROR MESSAGE" <<endl;
+                }
+                catch (...){
+                    std::cerr << "UNKNOWN EXCEPTION" << endl;
+                }
+        Keyword "noexcept" :
+            tell the compiler that the method will not throw exception
+        !! DO NOT THROW EXCEPTION IN DESTRUCTOR
+    */
+
+    // std::unique_ptr<Account> a1 = std::make_unique<SavingAccount>("Frank", 5000.0, 0.003);
+    // cout << a1->get_balance() << endl;
 
     // std::shared_ptr<Account> a1 =  std::make_shared<SavingAccount> ("Frank", 6000, 0.03);
     // std::vector<std::shared_ptr<Account>> accVec;
