@@ -12,6 +12,21 @@
 // {
 // }
 
+Account &Account::operator=(const Account &rhs)
+{
+    // copy for copying a certain value from the rhs
+    std::cout << "Copy Assignment called" << std::endl;
+
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    this->name = rhs.name;
+    this->balance = rhs.balance;
+    return *this;
+}
+
 int Account::num_accounts = 0; // class-wide static variable is declared here.
 
 int Account::get_num_accounts()

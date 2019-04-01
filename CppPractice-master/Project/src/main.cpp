@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include <string>
 #include <cmath>
+#include <memory>
 
 #include "Account.h"
 #include "Mystring.h"
@@ -932,9 +933,7 @@ int main()
 
     /*
         Constructors -> the c++ has the default constructor
-
         !! however, once a constructor is defined in the class, the default constructor will be removed
-
     */
 
     /**********
@@ -973,16 +972,70 @@ int main()
         
     */
 
-    Account acc;
-    acc.deposit(1000);
-    acc.withdraw(500);
+    // Account acc;
+    // acc.deposit(1000);
+    // acc.withdraw(500);
 
-    SavingAccount savingAcc;
-    savingAcc.deposit(1000);
-    savingAcc.withdraw(500);
+    // SavingAccount savingAcc{"Frank", 7000.0, 0.5};
+    // savingAcc.deposit(1000);
+    // savingAcc.withdraw(500);
 
-    cout << "The init rate is " << savingAcc.initRate << endl; // after this, the destructors are called.
+    // cout << "The init rate is " << savingAcc.initRate << endl; // after this, the destructors are called.
+    // cout << "The name is: " << savingAcc.get_name() << endl;
+    // cout << "The balance is: " << savingAcc.get_balance() << endl;
+
+    /*
+        #include <memory>
+        Smart Pointer:
+            Syntax: 
+                std::smart_pointer<TYPE> ptr= 
+
+            Unique Pointer:
+                Syntax:
+                std::unique_ptr<TYPE> p1 = std::make_unique<TYPE>(CONSTRUCTOR_ARGUMENTS);
+
+                - can only be one pointting to the object on the heap
+                - cannot be assiged, copied 
+                - can be moved
+                - when the ptr is destroyed, the pointed object will be destroyed as well
+
+                - unique methods:
+                    p1.get() -> get the address
+                    p1.reset() -> set it to nullptr
+                    vec.push(std::move(p1)) -> can only be moved
+            Share Pointer:
+                Provide the shared ownership to the heap onject
+                    -> Therefore, we can have one heap obj referenced by multiple ptrs.
+                Diffrence from unique_ptr:
+                    - it can be copied ,assigned and moved
+
+
+            Weak Pinter:
+
+                Provide a non-owning "weak" reference
+                    - Do not affect the life-time of the pointed obj
+            
+            Custom Deleters:
+                Syntax:
+                    shared_ptr<TYPE> ptr { new TYPE {} , [](TYPE *ptr){} // or deletor} // we have to pass the pointer into the deletor
+
+            Lambda Expression in CPP: [](Args) { //CODE }
+        !! Pointer arithmetic is not supported
+    */
+
+//     std::unique_ptr<Account> a1 = std::make_unique<SavingAccount>("Frank", 5000.0, 0.003);
+//     cout << a1->get_balance() << endl;
+
+    // std::shared_ptr<Account> a1 =  std::make_shared<SavingAccount> ("Frank", 6000, 0.03);
+    // std::vector<std::shared_ptr<Account>> accVec;
+    // accVec.push_back(a1); 
+
+
+
+
 }
+
+
 
 //////////////////////////// Function Definitions ////////////////////////////
 

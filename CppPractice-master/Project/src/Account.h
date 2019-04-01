@@ -61,11 +61,13 @@ public:
       }
   */
 
+  Account &operator=(const Account &rhs);
+
   Account(const Account &source);
 
   // Destructor (only one desctructor is allowed for a class) -> the desctrutor is called after the class is not availile anymore -> like the class in a function, out of the local scope the instance will not exist anymore.
 
-  ~Account();
+  virtual ~Account();
 
   // Shallow Copy -> the default  copy constructor do
 
@@ -109,6 +111,6 @@ public:
   void set_name(std::string n);
   std::string get_name();
 
-  bool deposit(double amount);
-  bool withdraw(double amount);
+  virtual bool deposit(double amount);
+  virtual bool withdraw(double amount);
 };
