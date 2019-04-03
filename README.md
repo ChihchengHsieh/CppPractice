@@ -1030,15 +1030,6 @@ public:
   // --> it means this function is considered as const at outside, 
   // --> so we can call this method when we define an instance as const
 
-
-
-  /*
-  	CLASS STATIC METHOD
-  */
-  // static class members: --> class-wide information
-  static int get_num_accounts();
-
-
   /*
 	STRCTU V.S CLASS
   */
@@ -1050,6 +1041,13 @@ public:
 
 
   ///////////////////////// Functions /////////////////////////
+  
+  /*
+  	CLASS STATIC METHOD
+  */
+  // static class members: --> class-wide information
+  static int get_num_accounts();
+  
   
   Account &operator=(const Account &rhs); // Overloading Operator as the member function
   
@@ -1067,7 +1065,7 @@ public:
 
 
   // THE OVERIDDING VIRTUAL FUNCTION, WHICH OVERRIDES THE ABSTRACT 
-  virtual bool deposit(double amount);
+  virtual bool deposit(double amount); // The virtual function can bind the class in the run-time
   virtual bool withdraw(double amount);
 }; // << --- REMENBER THE SIMICOLON at the end of CLASS DECLARATIOn
 
@@ -1075,13 +1073,578 @@ public:
 ```
 
 
+#### Account.cpp file
+
+```c++
+#include "Account.h" // -> the cpp file has to include the .h file
+                     // to defining the methods in thie cpp file
+                     // no semicolon is needed after the definition of the function
+
+
+int Account::num_accounts = 0; // class-wide static variable is inited here and declared in the .h file.
+
+int Account::get_num_accounts()
+{
+    return num_accounts;
+}
+
+/*
+	CONSTRUCTOR
+*/
+Account::Account(string name_val, double balance_val)
+    : name{name_val}, balance{balance_val} 
+    // leave the longest arguments as the full version, and other construtor will just use the full verison of the
+    // constructor
+{
+    cout << "Account constructor called" << endl;
+    ++num_accounts;
+}
+
+/*
+	COPY CONSTRUCTOR
+*/
+Account::Account(const Account &source) // copy constructor
+    : name{source.name}, balance{source.balance}
+{
+    cout << "Copy constructor is called" << endl;
+}
+
+
+/*
+	DESTROCTOR
+*/
+
+Account::~Account() // destructor
+{
+    cout << "Destructor called" << endl;
+    --num_accounts;
+}
+
+/*
+	OVERLOADING OPERATOR
+*/
+
+Account &Account::operator=(const Account &rhs)
+{
+    // copy for copying a certain value from the rhs
+    std::cout << "Copy Assignment called" << std::endl;
+
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    this->name = rhs.name;
+    this->balance = rhs.balance;
+    return *this;
+}
+
+
+
+
+///////////////// FUNCTIONS /////////////////
+
+
+void Account::set_name(std::string n)
+{
+    name = n;
+}
+
+std::string Account::get_name()
+{
+    return name;
+}
+
+bool Account::deposit(double amount)
+{
+    std::cout << "Base Account deposit called with " << amount << endl;
+    balance += amount;
+    return true;
+}
+
+bool Account::withdraw(double amount)
+{
+    std::cout << "Base Account withdraw called with " << amount << endl;
+
+    if (balance - amount >= 0)
+    {
+        balance -= amount;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+```
+
+#### SavingAccount.h file
+
+```c++
+
+#include "Account.h"
+#include <string>
+
+/*
+  - The abstract class can't be instantiacted: -> used as the base class:
+    - Contain at least one pure virtual function:
+      - Pure Virtual Fucntion:
+        virtual RETURN_TYPE  FUNCTION_NAME () = 0;
+          - Doesn't have to provide the implementation
+          - The derived class must override the base class (this function) - If not, then the derived class is abstract as 
+	    well.
+          - The Concret class has to provide the keyword "override" for the pure virtual function
+  - Concrete class:
+    - All the member function are defined
+    - Used fir intantiate objects
+*/
+
+/*
+  Multiple Inheritance:
+  class DERIVED : public BASE_1, public BASE_2{};
+*/
+
+/*
+  Virtual Function:
+    - can be override in derived class, and can be bound dinamatically at run time
+    - For solving the problem of : Account *ptr = new SavingAccount();
+      --> This ptr->deposit will call the deposit method on the account class since it depends on the pointer type:
+*/
+
+/*
+  Final Specifier:
+    class CLASS_NAME final {};
+    -> then no class can be inherited from this class ==> whichh means this class is the last node on the class diagram
+*/
+
+class SavingAccount : public Account
+{
+
+  /*
+    
+    A derived class does NOT inherit:
+        - Base class contructor, destructor, overloaded assignment operator and friend function.
+    
+    */
+
+public:
+  double initRate;
+  SavingAccount();
+  SavingAccount(std::string name_val = "None", double balance_val =0.0 , double initRate_val = 0.03); // Constructor
+  ~SavingAccount(); // Destructor
+  SavingAccount &operator=(const SavingAccount &rhs); // assignment operator
+  SavingAccount(const SavingAccount &other);          // Copy constructor
+
+  virtual bool deposit(double amount);  // we have deposit and withdraw method in the Account class as well.
+  virtual bool withdraw(double amount); // we can directly overload the original method in this class;
+  // -> other things we don't touch it, then it will come from the base model;
+};
+
+```
+
+
+#### SavingAccount.cpp file
+
+```c++
+
+#include <iostream>
+#include "SavingAccount.h"
+
+/*
+    Redefine or Override the base class method
+
+*/
+
+// passing the arguement to the base class
+
+/*
+    Derived::Derived(arg)
+        : Base{x}, {optional initializer for Derived}
+        {
+            CODE HERE
+        }        
+*/
+
+/*
+	CONSTRUCTOR
+*/
+
+SavingAccount::SavingAccount(std::string name_val, double balance_val, double initRate_val)
+    : Account{name_val, balance_val}, initRate{initRate_val}
+{
+    cout << "The whole constructor called" << endl;
+}
+
+// !! The move and copy constructors will not be inherited !!
+
+
+/*
+	MOVE CONSTRUCTOR
+*/
+
+SavingAccount::SavingAccount(const SavingAccount &other)
+    : Account(other), initRate{other.initRate}
+{
+    cout << "The SavingAccount Copy Constructor called" << endl;
+}
+
+/*
+	OVERLOADING ASSIGNEMENT OPERATOR
+*/
+
+SavingAccount &SavingAccount::operator=(const SavingAccount &rhs)
+{
+    if (this != &rhs) // if we want to access "this" , it has to be a member function
+    {
+        Account::operator=(rhs);
+        initRate = rhs.initRate;
+    }
+    return *this;
+}
+
+
+/*
+	DESTRUCTOR
+*/
+SavingAccount::~SavingAccount() {}
+
+
+//////////////////////// FUCNTIONS ////////////////////////
+bool SavingAccount::withdraw(double amount)
+{
+    std::cout << "SavingAccount withdraw called with" << amount << endl;
+    return Account::withdraw(amount);
+}
+
+bool SavingAccount::deposit(double amount)
+{
+    std::cout << "SavingAccount deposit called with" << amount << endl;
+    amount += amount * initRate;
+    return Account::deposit(amount);
+}
+
+```
+
 
 #### Smart Pointer
 
+```c++
+/*
+    #include <memory>
+    Smart Pointer:
+        Syntax: 
+            std::smart_pointer<TYPE> ptr= 
+
+        Unique Pointer:
+            Syntax:
+            std::unique_ptr<TYPE> p1 = std::make_unique<TYPE>(CONSTRUCTOR_ARGUMENTS);
+
+            - can only be one pointting to the object on the heap
+            - cannot be assiged, copied 
+            - can be moved
+            - when the ptr is destroyed, the pointed object will be destroyed as well
+
+            - unique methods:
+                p1.get() -> get the address
+                p1.reset() -> set it to nullptr
+                vec.push(std::move(p1)) -> can only be moved
+        Share Pointer:
+            Provide the shared ownership to the heap onject
+                -> Therefore, we can have one heap obj referenced by multiple ptrs.
+            Diffrence from unique_ptr:
+                - it can be copied ,assigned and moved
+
+
+        Weak Pinter:
+
+            Provide a non-owning "weak" reference
+                - Do not affect the life-time of the pointed obj
+        
+        Custom Deleters:
+            Syntax:
+                shared_ptr<TYPE> ptr { new TYPE {} , [](TYPE *ptr){} // or deletor} 
+		// we have to pass the pointer into the deletor
+
+        Lambda Expression in CPP: [](Args) { //CODE }
+    !! Pointer arithmetic is not supported
+*/
+
+std::unique_ptr<Account> a1 = std::make_unique<SavingAccount>("Frank", 5000.0, 0.003);
+cout << a1->get_balance() << endl;
+
+std::shared_ptr<Account> a1 =  std::make_shared<SavingAccount> ("Toe", 6000, 0.03);
+std::vector<std::shared_ptr<Account>> accVec;
+accVec.push_back(a1);
+
+
+```
+
+
+## STL Generic Programming
+
+
+```c++
+
+// Generic Function
+template <typename T>
+T max(T a, T b)
+{   
+    return (a > b) ? a : b;
+}
+
+// Generic Class
+template <typename T1, typename T2>
+struct MyClass
+{
+    T1 first;
+    T2 second;
+};
+
+// Calling them through
+
+int main()
+{
+    max<int>(5, 20);
+}
+```
+
+## Overloading Operator
+
+
+#### Mystring.h file
+
+
+```c++
+
+#pragma once
+
+class Mystring
+{
+    /*
+    	FRIEND RELATIONSHIP: for declaring the both rhs and lhs;
+	// using the friend function to directly access the private field
+    */
+
+    /*
+    	OVERLOADING OPERATOR
+    */
+    friend bool operator==(const Mystring &lhs, const Mystring &rhs);
+    friend Mystring operator-(const Mystring &obj);
+    friend Mystring operator+(const Mystring &lhs, const Mystring &rhs);
+    friend std::ostream &operator<<(std::ostream &os, const Mystring &rhs);
+    friend std::istream &operator>>(std::istream &is, Mystring &rhs);
+    
+  private:
+    char *str;
+
+  public:
+    Mystring();
+    Mystring(const char *s); // overloaded constructor
+    Mystring(const Mystring &source); // COPY constructor
+    ~Mystring();
+    void display() const;
+    int get_length() const;
+    const char *get_str() const;
+    Mystring(Mystring &&source); // MOVE constructor
+
+    // overloading operators
+    Mystring &operator=(Mystring &&rhs);      // move assignment -> cuz the string
+    Mystring &operator=(const Mystring &rhs); // Copy assignment --> return Mystring
+
+    Mystring operator-() const;                    // make a lower case copy
+    Mystring operator+(const Mystring &rhs) const; // concatenate two Mystring
+    bool operator==(const Mystring &rhs) const;
+};
+```
+
+#### Mystring.cpp file
+
+
+```c++
+
+#include <cstring>
+#include <iostream>
+#include <locale>
+#include "Mystring.h"
+
+// Equality
+// we don't have to declare a function as "Mystring::operator" since it's a global function
+bool operator==(const Mystring &lhs, const Mystring &rhs) 
+{
+    return (std::strcmp(lhs.str, rhs.str) == 0);
+}
+
+// Concatenation
+Mystring operator+(const Mystring &lhs, const Mystring &rhs)
+{
+    char *buff = new char[std::strlen(lhs.str) + std::strlen(rhs.str)];
+    std::strcpy(buff, lhs.str);
+    std::strcat(buff, rhs.str);
+    Mystring temp{buff};
+    delete[] buff;
+    return temp;
+}
+
+// Make lowercase
+Mystring operator-(const Mystring &obj)
+{
+    char *buff = new char[std::strlen(obj.str) + 1];
+    std::strcpy(buff, obj.str);
+
+    for (size_t i{0}; i < std::strlen(buff); i++)
+    {
+        buff[i] = std::tolower(buff[i]);
+    }
+
+    Mystring temp{buff};
+    delete[] buff;
+
+    return temp;
+}
+
+// Equality
+bool Mystring::operator==(const Mystring &rhs) const
+{
+    return (std::strcmp(str, rhs.str) == 0);
+}
+
+// Make lowercase version of it:
+Mystring Mystring::operator-() const
+{
+    char *buff = new char[std::strlen(str) + 1];
+    std::strcpy(buff, str); // no need for dereferencing
+
+    for (size_t i{0}; i < std::strlen(buff); i++)
+    {
+        buff[i] = std::tolower(buff[i]);
+    }
+
+    Mystring temp{buff};
+
+    delete[] buff;
+
+    return temp;
+}
+
+// Concateneate
+Mystring Mystring::operator+(const Mystring &rhs) const
+{
+    char *buff = new char[std::strlen(str) + std::strlen(rhs.str) + 1];
+    std::strcpy(buff, str);
+    std::strcat(buff, rhs.str);
+    Mystring temp{buff};
+    delete[] buff;
+    return temp;
+}
+
+Mystring &Mystring::operator=(Mystring &&rhs)
+{
+    // moving for stealing the ptr
+    std::cout << "Move Assignment called" << std::endl;
+
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    delete str; // delete this->str
+    str = rhs.str;
+    rhs.str = nullptr;
+    return *this;
+}
+
+Mystring &Mystring::operator=(const Mystring &rhs)
+{
+    // copy for copying a certain value from the rhs
+    std::cout << "Copy Assignment called" << std::endl;
+
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    delete[] this->str;
+    str = new char[std::strlen(rhs.str) + 1]; // Q: why do we need to add one?
+    std::strcpy(this->str, rhs.str);
+    return *this;
+}
 
 
 
+/*
+	CONSTRUCTOR
+*/
+Mystring::Mystring()
+    : str{nullptr}
+{
+    str = new char[1];
+    *str = '\0';
+}
 
+Mystring::Mystring(const char *s)
+    : str{nullptr}
+{
+    if (s == nullptr)
+    {
+        str = new char[1];
+        *str = '\0';
+    }
+    else
+    {
+        str = new char[std::strlen(s) + 1];
+        std::strcpy(str, s);
+    }
+}
+
+/*
+	MOVE CONSTRUCTOR
+*/
+Mystring::Mystring(Mystring &&source)
+    : str{source.str}
+{
+    source.str = nullptr;
+    std::cout << "Move constructor used" << std::endl;
+}
+
+
+/*
+	COPY CONSTRUCTOR
+*/
+Mystring::Mystring(const Mystring &source) // used for constructing another instance
+    : str{nullptr}
+{
+    str = new char[std::strlen(source.str) + 1];
+    std::strcpy(str, source.str);
+}
+
+/*
+	DESTRUCTOR
+*/
+
+Mystring::~Mystring()
+{
+    delete[] str;
+}
+
+// Display method
+void Mystring::display() const
+{
+    std::cout << str << ":" << get_length() << std::endl;
+}
+
+// length getter
+int Mystring::get_length() const
+{
+    return std::strlen(str);
+}
+
+// string getter
+const char *Mystring::get_str() const
+{
+    return str;
+}
+
+```
 
 
 
