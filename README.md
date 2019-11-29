@@ -10,6 +10,10 @@ using the c++ complier in the Terminal:
 
 g++ -Wall -std=c++17 main.cpp -o main
 
+for c to run:
+
+gcc -Wall hello.c -o hello  
+
 then,
 
 ./main to execute
